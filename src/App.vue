@@ -1,31 +1,47 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link>
-    </div>
+    <b-navbar type="is-dark">
+      <template slot="brand">
+        <b-navbar-item tag="router-link" :to="{ path: '/' }" class="is-primary">
+          ScoreKeeper
+        </b-navbar-item>
+      </template>
+
+      <template slot="end">
+        <b-navbar-item tag="div">
+          <div class="buttons">
+            <a class="button is-primary">
+              About
+            </a>
+          </div>
+          </b-navbar-item>
+      </template>
+    </b-navbar>
+
     <router-view/>
   </div>
 </template>
 
 <style lang="scss">
+@import "~bulma/sass/utilities/_all";
+
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Space Mono', monospace;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
-}
 
-#nav {
-  padding: 30px;
+  h1, h2, h3, h4, h5, h6, .navbar-brand {
+    font-family: 'BioRhyme', serif;
+  }
 
-  a {
-    font-weight: bold;
-    color: #2c3e50;
+  .navbar {
+    padding: 20px;
 
-    &.router-link-exact-active {
-      color: #42b983;
+    &-brand {
+      font-size: 30px;
     }
   }
 }
+
 </style>
