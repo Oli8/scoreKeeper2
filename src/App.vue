@@ -37,6 +37,7 @@
 
   .navbar {
     padding: 20px;
+    margin-bottom: 10px;
 
     &-brand {
       font-size: 30px;
