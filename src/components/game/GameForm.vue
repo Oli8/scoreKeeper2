@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div>
     <b-field label="Add a player">
       <b-input v-model="pendingPlayerName"></b-input>
     </b-field>
