@@ -23,8 +23,6 @@
 </template>
 
 <style lang="scss">
-@import "~bulma/sass/utilities/_all";
-
 #app {
   font-family: 'Space Mono', monospace;
   -webkit-font-smoothing: antialiased;
@@ -44,5 +42,4 @@
     }
   }
 }
-
 </style>
