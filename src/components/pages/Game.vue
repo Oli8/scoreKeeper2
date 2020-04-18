@@ -8,8 +8,7 @@
     <player-table
       @sync="SyncData"
       :players="players"
-      :step="step"
-    />
+      :step="step"/>
   </div>
 </template>
 
