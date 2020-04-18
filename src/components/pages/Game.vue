@@ -35,7 +35,7 @@ export default {
         new Player('Xav'),
       ],
       step: 10,
-      quickScoreOptions: [...Array(11).keys()],
+      quickScoreOptions: [...Array(11).keys()] as number[],
     };
   },
   methods: {
