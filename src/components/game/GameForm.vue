@@ -4,7 +4,9 @@
       <b-input v-model="pendingPlayerName"></b-input>
     </b-field>
     <b-field label="Step">
-      <b-input v-model="step" type="number"></b-input>
+      <b-input @input="$emit('sync', 'step', Number(step))" 
+               v-model="step"
+               type="number"></b-input>
     </b-field>
     <div class="field">
       <b-checkbox v-model="finishLine.enabled"

@@ -1,4 +1,4 @@
-class Player {
+export default class Player {
   readonly name: string;
   score: number = 0;
 
@@ -10,7 +10,7 @@ class Player {
     this.score = 0;
   }
 
-  public add(points: number) {
+  public addPoints(points: number) {
     this.score += points;
   }
 }
