@@ -38,8 +38,11 @@
 
           <b-table-column label="Remove">
             <b-button icon-left="trash-alt"
-                      type="is-primary"
-                      @click="removePlayer(props.row)"></b-button>
+                      type="is-danger"
+                      @click="$buefy.dialog.confirm({
+                          message: `Are you sure you want to remove ${props.row.name} from the game ?`,
+                          onConfirm: removePlayer.bind(this, props.row)
+                      })"></b-button>
         </b-table-column>
       </template>
     </b-table>
@@ -59,6 +62,10 @@ export default {
       const index = this.players.findIndex(p => p === player);
       this.players.splice(index, 1);
       this.$emit('sync', 'players', this.players);
+      this.$buefy.toast.open({
+        message: `${player.name} has been removed from the game.`,
+        type: 'is-info'
+      })
     },
   },
 }
