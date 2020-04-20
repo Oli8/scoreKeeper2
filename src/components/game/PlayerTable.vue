@@ -45,6 +45,21 @@
                       })"></b-button>
         </b-table-column>
       </template>
+
+      <template slot="empty">
+        <section class="section">
+          <div class="content has-text-grey has-text-centered">
+            <p>
+              <b-icon
+                  icon="frown"
+                  size="is-large">
+              </b-icon>
+            </p>
+            <p>No players yet.</p>
+          </div>
+        </section>
+      </template>
+
     </b-table>
   </section>
 </template>
