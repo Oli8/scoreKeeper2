@@ -47,7 +47,7 @@ export default {
         new Player('Oli'),
         new Player('Sym'),
         new Player('Xav'),
-      ],
+      ] as Player[],
       step: 10,
       quickScoreOptions: range(13) as number[],
     };
@@ -83,7 +83,7 @@ export default {
   },
   watch: {
     players: {
-      handler: (val) =>  {
+      handler: (val: Player[]) => {
         localStorage.players = JSON.stringify(val);
       },
       deep: true,
