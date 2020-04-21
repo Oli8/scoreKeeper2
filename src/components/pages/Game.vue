@@ -25,6 +25,13 @@ export default {
     GameQuickScore,
     PlayerTable,
   },
+  mounted() {
+    if (localStorage.players) {
+      this.players = JSON.parse(localStorage.players).map((player) => {
+        return new Player(player.name).setScore(player.score);
+      });
+    }
+  },
   data() {
     return {
       players: [
@@ -44,6 +51,14 @@ export default {
     },
     SyncData(property: string, value: any): any {
       this[property] = value;
+    },
+  },
+  watch: {
+    players: {
+      handler: (val) =>  {
+        localStorage.players = JSON.stringify(val);
+      },
+      deep: true,
     },
   },
 };
