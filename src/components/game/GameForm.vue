@@ -1,12 +1,13 @@
 <template>
   <div>
     <b-field label="Add a player">
-      <b-input v-model="pendingPlayerName"></b-input>
+      <b-input v-model="pendingPlayerName"
+               v-on:keydown.native.enter="addPlayer"
+               placeholder="Name"></b-input>
     </b-field>
     <b-field label="Step">
-      <b-input @input="$emit('sync', 'step', Number(step))" 
-               v-model="step"
-               type="number"></b-input>
+      <b-numberinput @input="$emit('sync', 'step', Number(step))"
+                     v-model="step"></b-numberinput>
     </b-field>
     <div class="field">
       <b-checkbox v-model="finishLine.enabled"
@@ -37,6 +38,10 @@ export default {
     focusFinishLineField(): void {
       (this.$refs.finishLineField as HTMLInputElement).focus();
     },
-  }
+    addPlayer(): void {
+      this.$emit('add-player', this.pendingPlayerName);
+      this.pendingPlayerName = '';
+    },
+  },
 };
 </script>
