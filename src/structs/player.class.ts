@@ -13,4 +13,9 @@ export default class Player {
   public addPoints(points: number) {
     this.score += points;
   }
+
+  public setScore(score: number) {
+    this.score = score;
+    return this;
+  }
 }
