@@ -11,6 +11,8 @@
       @sync="SyncData"
       :players="players"
       :step="step"/>
+    <game-logs
+      :players="playersNames()"/>
   </div>
 </template>
 
@@ -19,11 +21,13 @@ import {
   uniqueNamesGenerator, Config,
   colors, adjectives, animals, starWars,
 } from 'unique-names-generator';
-import { range, sample } from 'lodash';
+import { range, sample, map } from 'lodash';
 
 import GameForm from '@/components/game/GameForm';
 import GameQuickScore from '@/components/game/GameQuickScore';
 import PlayerTable from '@/components/game/PlayerTable';
+import GameLogs from '@/components/game/GameLogs';
+
 import Player from '@/structs/player.class';
 
 export default {
@@ -32,6 +36,7 @@ export default {
     GameForm,
     GameQuickScore,
     PlayerTable,
+    GameLogs,
   },
   mounted() {
     if (localStorage.players) {
@@ -79,6 +84,9 @@ export default {
     },
     isInvalidPlayerName(name: string): boolean {
       return !name.trim() || this.players.map((p: Player) => p.name).includes(name);
+    },
+    playersNames(): string[] {
+      return map(this.players, 'name');
     },
   },
   watch: {
