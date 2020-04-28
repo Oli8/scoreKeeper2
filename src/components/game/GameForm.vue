@@ -13,10 +13,9 @@
       <b-checkbox v-model="finishLine.enabled"
                   @input="focusFinishLineField"
       >Finish line</b-checkbox>
-      <b-input v-model="finishLine.value"
+      <b-numberinput v-model="finishLine.value"
                ref="finishLineField"
-               type="number"
-               v-show="finishLine.enabled"></b-input>
+               v-show="finishLine.enabled"></b-numberinput>
     </div>
   </div>
 </template>
