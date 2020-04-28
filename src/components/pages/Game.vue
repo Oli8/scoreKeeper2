@@ -71,19 +71,23 @@ export default {
       );
     },
     checkPlayerName(name: string): string {
-      if (this.isInvalidPlayerName(name)) {
+      if (!this.isInvalidPlayerName(name))
+        return name;
+
+      do {
         const dictionary = sample([[adjectives, animals],
-                                   [colors, animals],
-                                   [starWars],]);
-        return uniqueNamesGenerator({dictionaries: dictionary,
-                                     separator: ' ',
-                                     length: dictionary.length,
+                                    [colors, animals],
+                                    [starWars],]);
+        name = uniqueNamesGenerator({dictionaries: dictionary,
+                                      separator: ' ',
+                                      length: dictionary.length,
                                     } as Config);
-      }
+      } while (this.isInvalidPlayerName(name));
+
       return name;
     },
     isInvalidPlayerName(name: string): boolean {
-      return !name.trim() || this.players.map((p: Player) => p.name).includes(name);
+      return !name.trim() || this.playersNames().includes(name);
     },
     playersNames(): string[] {
       return map(this.players, 'name');
