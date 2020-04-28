@@ -29,6 +29,7 @@ import PlayerTable from '@/components/game/PlayerTable';
 import GameLogs from '@/components/game/GameLogs';
 
 import Player from '@/structs/player.class';
+import { DEFAULT_STEP } from '@/consts.ts';
 
 export default {
   name: 'Game',
@@ -53,7 +54,7 @@ export default {
         new Player('Sym'),
         new Player('Xav'),
       ] as Player[],
-      step: 10,
+      step: DEFAULT_STEP,
       quickScoreOptions: range(13) as number[],
     };
   },

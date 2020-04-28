@@ -21,12 +21,14 @@
 </template>
 
 <script lang="ts">
+import { DEFAULT_STEP } from '@/consts.ts';
+
 export default {
   name: 'GameForm',
   data() {
     return {
       pendingPlayerName: '',
-      step: 10,
+      step: DEFAULT_STEP,
       finishLine: {
         enabled: false,
         value: 50,
