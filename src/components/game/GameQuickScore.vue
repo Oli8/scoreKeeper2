@@ -1,5 +1,5 @@
 <template>
-  <div class="buttons">
+  <div class="buttons is-centered">
     <b-button v-for="option in options"
               @click="$emit('quick-score', option)"
               :key="option"
@@ -16,9 +16,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-.buttons {
-  justify-content: center;
-}
-</style>
