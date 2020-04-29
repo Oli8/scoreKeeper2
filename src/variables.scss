@@ -1,1 +1,3 @@
-$stripes: #fafafa;
+@import "~bulma/sass/utilities/_all";
+
+$stripes: $grey-lighter;

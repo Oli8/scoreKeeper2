@@ -85,3 +85,12 @@ export default {
   },
 }
 </script>
+
+<style lang="scss">
+@import "@/variables";
+/* /!\ Can't use `scoped` because of the nested components
+   with their own `template` tag */
+.table.is-striped tbody tr:not(.is-selected):nth-child(even) {
+  background-color: $stripes;
+}
+</style>
