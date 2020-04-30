@@ -11,8 +11,13 @@
       @sync="SyncData"
       :players="players"
       :step="step"/>
-    <game-logs
-      :players="playersNames()"/>
+    <section class="buttons is-centered">
+      <b-button v-for="button in gameButtons"
+                @click="button.callback">
+        {{ button.label }}
+      </b-button>
+    </section>
+    <game-logs :players="playersNames()"/>
   </div>
 </template>
 
@@ -56,6 +61,11 @@ export default {
       ] as Player[],
       step: DEFAULT_STEP,
       quickScoreOptions: range(13) as number[],
+      gameButtons: [
+        { label: 'Reset Scores', callback: this.resetScores},
+        { label: 'Clear game', callback: this.clearGame},
+        { label: 'End game', callback: this.endGame},
+      ] as { label: string, callback: function }[],
     };
   },
   methods: {
@@ -71,6 +81,15 @@ export default {
         new Player(this.checkPlayerName(name)),
       );
     },
+    resetScores(): void {
+      this.players.forEach((p: player) => p.resetScore());
+      // TODO: add scores reset event
+    },
+    clearGame(): void {
+      this.players = [];
+      // TODO: clear log through root event ?
+    },
+    endGame(): void { },
     checkPlayerName(name: string): string {
       if (!this.isInvalidPlayerName(name))
         return name;
