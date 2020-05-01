@@ -4,6 +4,7 @@ enum EventsType {
   GAME_RESET = 'GAME_RESET',
   NEW_TURN = 'NEW_TURN',
   PLAYER_REMOVED = 'PLAYER_REMOVED',
+  PLAYER_JOINED = 'PLAYER_JOINED',
 }
 
 export default EventsType;
