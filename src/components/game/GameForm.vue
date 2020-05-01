@@ -7,6 +7,7 @@
     </b-field>
     <b-field label="Step">
       <b-numberinput @input="$emit('sync', 'step', Number(step))"
+                     min="0"
                      v-model="step"></b-numberinput>
     </b-field>
     <div class="field">

@@ -21,25 +21,17 @@
 
 <script lang="ts">
 import EventsType from '@/structs/events';
-
-interface eventData {
-  player?: string,
-  points?: number,
-  turn?: number,
-}
-
-interface event {
-  type: EventsType,
-  data?: eventData,
-}
+import { event, eventData } from '@/structs/logEvents';
 
 const eventMessage = {
-  [EventsType.POINTS]: (e: eventData): string => `${e.player} has won ${e.points} points`,
+  [EventsType.POINTS]: (e: eventData): string => `${e.player} has ${e.points < 0 ? 'lost' : 'won'}
+                                                  ${Math.abs(e.points)} points`,
   [EventsType.SCORE_RESET]: (e: eventData): string => `${e.player}'s score has been reset`,
   [EventsType.SCORES_RESET]: (e: eventData): string => `Scores have been reset`,
   [EventsType.GAME_RESET]: (e: eventData): string => 'Game has been reset',
   [EventsType.NEW_TURN]: (e: eventData): string => `Turn: ${e.turn}`,
   [EventsType.PLAYER_REMOVED]: (e: eventData): string => `${e.player} has been removed`,
+  [EventsType.PLAYER_JOINED]: (e: eventData): string => `${e.player} has joined the game!`,
 };
 
 export default {
@@ -47,15 +39,14 @@ export default {
   props: {
     players: Array as () => string[],
   },
+  mounted() {
+    this.$root.$on('log-event', (event: eventData) => {
+      this.events.push(event);
+    });
+  },
   data() {
     return {
-      events: [
-        { type: EventsType.POINTS, data: { player: 'Olivier', points: 7 }},
-        { type: EventsType.GAME_RESET },
-        { type: EventsType.NEW_TURN, data: { turn: 1 }},
-        { type: EventsType.SCORE_RESET, data: { player: 'Jer' }},
-        { type: EventsType.PLAYER_REMOVED, data: { player: 'Jer' }},
-      ] as event[],
+      events: [] as event[],
       filterPlayer: '',
     };
   },

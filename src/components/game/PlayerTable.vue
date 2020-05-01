@@ -21,19 +21,19 @@
         <b-table-column label="Add">
           <b-button icon-left="plus-circle"
                     type="is-primary"
-                    @click="props.row.addPoints(step)"></b-button>
+                    @click="addPoints(props.row)"></b-button>
         </b-table-column>
 
         <b-table-column label="Substract">
           <b-button icon-left="minus-circle"
                     type="is-primary"
-                    @click="props.row.addPoints(-step)"></b-button>
+                    @click="reducePoints(props.row)"></b-button>
         </b-table-column>
 
         <b-table-column label="Reset">
           <b-button icon-left="redo"
                     type="is-primary"
-                    @click="props.row.resetScore()"></b-button>
+                    @click="resetPlayerScore(props.row)"></b-button>
         </b-table-column>
 
           <b-table-column label="Remove">
@@ -66,6 +66,7 @@
 
 <script lang="ts">
 import Player from '@/structs/player.class';
+import EventsType from '@/structs/events';
 
 export default {
   props: {
@@ -76,11 +77,41 @@ export default {
     removePlayer(player: Player): void {
       const index = this.players.findIndex(p => p === player);
       this.players.splice(index, 1);
-      this.$emit('sync', 'players', this.players);
+
+      this.sendRemovePlayerEvents(player);
+
       this.$buefy.toast.open({
         message: `${player.name} has been removed from the game.`,
         type: 'is-info'
-      })
+      });
+    },
+    sendRemovePlayerEvents(player: Player): void {
+      this.$emit('sync', 'players', this.players);
+      this.emitLogEvent({
+        type: EventsType.PLAYER_REMOVED,
+        data: { player: player.name }
+      });
+    },
+    resetPlayerScore(player: player): void {
+      player.resetScore();
+      this.emitLogEvent({
+        type: EventsType.SCORE_RESET,
+        data: { player: player.name }
+      });
+    },
+    addPoints(player: player): void {
+      player.addPoints(this.step);
+      this.emitLogEvent({
+        type: EventsType.POINTS,
+        data: { player: player.name, points: this.step }
+      });
+    },
+    reducePoints(player: player): void {
+      player.addPoints(-this.step);
+      this.emitLogEvent({
+        type: EventsType.POINTS,
+        data: { player: player.name, points: -this.step }
+      });
     },
   },
 }

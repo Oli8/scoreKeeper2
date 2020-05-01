@@ -35,6 +35,7 @@ import GameLogs from '@/components/game/GameLogs';
 
 import Player from '@/structs/player.class';
 import { DEFAULT_STEP } from '@/consts.ts';
+import EventsType from '@/structs/events';
 
 export default {
   name: 'Game',
@@ -77,9 +78,14 @@ export default {
       this[property] = value;
     },
     addPlayer(name: string) {
+      name = this.checkPlayerName(name);
       this.players.push(
         new Player(this.checkPlayerName(name)),
       );
+      this.emitLogEvent({
+        type: EventsType.PLAYER_JOINED,
+        data: { player: name }
+      });
     },
     resetScores(): void {
       this.players.forEach((p: player) => p.resetScore());
