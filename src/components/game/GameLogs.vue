@@ -43,6 +43,10 @@ export default {
     this.$root.$on('log-event', (event: eventData) => {
       this.events.push(event);
     });
+
+    this.$root.$on('game-cleared', () => {
+      this.events = [];
+    });
   },
   data() {
     return {

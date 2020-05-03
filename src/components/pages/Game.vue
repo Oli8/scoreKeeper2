@@ -13,7 +13,12 @@
       :step="step"/>
     <section class="buttons is-centered">
       <b-button v-for="button in gameButtons"
-                @click="button.callback">
+                @click="$buefy.dialog.confirm({
+                  message: 'Are you sure ?',
+                  onConfirm: button.callback,
+                })"
+                :disabled="button.disabled()"
+                :icon-left="button.icon">
         {{ button.label }}
       </b-button>
     </section>
@@ -63,10 +68,13 @@ export default {
       step: DEFAULT_STEP,
       quickScoreOptions: range(13) as number[],
       gameButtons: [
-        { label: 'Reset Scores', callback: this.resetScores},
-        { label: 'Clear game', callback: this.clearGame},
-        { label: 'End game', callback: this.endGame},
-      ] as { label: string, callback: function }[],
+        { label: 'Reset Scores', callback: this.resetScores,
+          disabled: this.allScoresAtZero, icon: 'redo' },
+        { label: 'Clear game', callback: this.clearGame,
+          disabled: this.hasNoPlayers, icon: 'trash' },
+        { label: 'End game', callback: this.endGame,
+          disabled: this.hasNoPlayers, icon: 'step-forward' },
+      ] as { label: string, callback: function, disabled: function, icon?: string }[],
     };
   },
   methods: {
@@ -89,13 +97,19 @@ export default {
     },
     resetScores(): void {
       this.players.forEach((p: player) => p.resetScore());
-      // TODO: add scores reset event
+      this.emitLogEvent({ type: EventsType.SCORES_RESET });
     },
     clearGame(): void {
       this.players = [];
-      // TODO: clear log through root event ?
+      this.$root.$emit('game-cleared');
     },
     endGame(): void { },
+    allScoresAtZero(): boolean {
+      return this.players.every((p: player) => p.score === 0);
+    },
+    hasNoPlayers(): boolean {
+      return this.players.length === 0;
+    },
     checkPlayerName(name: string): string {
       if (!this.isInvalidPlayerName(name))
         return name;
