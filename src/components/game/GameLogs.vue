@@ -22,6 +22,7 @@
 <script lang="ts">
 import EventsType from '@/structs/events';
 import { event, eventData } from '@/structs/logEvents';
+import { WatchAndCache } from '@/utils';
 
 const eventMessage = {
   [EventsType.POINTS]: (e: eventData): string => `${e.player} has ${e.points < 0 ? 'lost' : 'won'}
@@ -47,6 +48,8 @@ export default {
     this.$root.$on('game-cleared', () => {
       this.events = [];
     });
+
+    this.loadEventsFromStorage();
   },
   data() {
     return {
@@ -57,6 +60,11 @@ export default {
   methods: {
     formatMessage(event: event): string {
       return eventMessage[event.type](event.data as eventData);
+    },
+    loadEventsFromStorage() {
+      const events = localStorage.events;
+      if (events)
+        this.events = JSON.parse(events);
     },
   },
   computed: {
@@ -69,6 +77,7 @@ export default {
       });
     },
   },
+  watch: WatchAndCache('events'),
 };
 </script>
 
