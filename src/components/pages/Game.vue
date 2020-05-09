@@ -41,6 +41,7 @@ import GameLogs from '@/components/game/GameLogs';
 import Player from '@/structs/player.class';
 import { DEFAULT_STEP } from '@/consts.ts';
 import EventsType from '@/structs/events';
+import { WatchAndCache } from '@/utils';
 
 export default {
   name: 'Game',
@@ -51,6 +52,7 @@ export default {
     GameLogs,
   },
   mounted() {
+    // Load players from Storage
     if (localStorage.players) {
       this.players = JSON.parse(localStorage.players).map((player) => {
         return new Player(player.name).setScore(player.score);
@@ -133,14 +135,7 @@ export default {
       return map(this.players, 'name');
     },
   },
-  watch: {
-    players: {
-      handler: (val: Player[]) => {
-        localStorage.players = JSON.stringify(val);
-      },
-      deep: true,
-    },
-  },
+  watch: WatchAndCache('players'),
 };
 </script>
 
