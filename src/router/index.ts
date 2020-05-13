@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+
 import Game from '@/components/pages/Game.vue';
 
 Vue.use(VueRouter);
@@ -9,6 +10,16 @@ const routes = [
     path: '/',
     name: 'Game',
     component: Game,
+  },
+  {
+    path: '/result',
+    name: 'Result',
+    component: () => import('@/components/pages/Result.vue'),
+    props: true,
+  },
+  {
+    path: '*',
+    redirect: '/',
   },
 ];
 
