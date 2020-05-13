@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div>
     <game-form
       @sync="SyncData"
       @add-player="addPlayer"/>
@@ -39,6 +39,7 @@ import PlayerTable from '@/components/game/PlayerTable';
 import GameLogs from '@/components/game/GameLogs';
 
 import Player from '@/structs/player.class';
+import gameButton from '@/structs/gameButton';
 import { DEFAULT_STEP } from '@/consts.ts';
 import EventsType from '@/structs/events';
 import { WatchAndCache } from '@/utils';
@@ -61,12 +62,7 @@ export default {
   },
   data() {
     return {
-      players: [
-        new Player("Jér"),
-        new Player('Oli'),
-        new Player('Sym'),
-        new Player('Xav'),
-      ] as Player[],
+      players: [] as Player[],
       step: DEFAULT_STEP,
       quickScoreOptions: range(13) as number[],
       gameButtons: [
@@ -76,7 +72,7 @@ export default {
           disabled: this.hasNoPlayers, icon: 'trash' },
         { label: 'End game', callback: this.endGame,
           disabled: this.hasNoPlayers, icon: 'step-forward' },
-      ] as { label: string, callback: function, disabled: function, icon?: string }[],
+      ] as gameButton[],
     };
   },
   methods: {
@@ -97,15 +93,23 @@ export default {
         data: { player: name }
       });
     },
-    resetScores(): void {
+    resetScores({withEvent=true}): void {
       this.players.forEach((p: player) => p.resetScore());
-      this.emitLogEvent({ type: EventsType.SCORES_RESET });
+      if (withEvent)
+        this.emitLogEvent({ type: EventsType.SCORES_RESET });
     },
     clearGame(): void {
       this.players = [];
       this.$root.$emit('game-cleared');
     },
-    endGame(): void { },
+    endGame(): void {
+      this.$router.push({
+        name: 'Result',
+        params: {
+          players: this.players,
+        },
+      });
+    },
     allScoresAtZero(): boolean {
       return this.players.every((p: player) => p.score === 0);
     },
@@ -136,6 +140,12 @@ export default {
     },
   },
   watch: WatchAndCache('players'),
+  beforeRouteEnter(_to, from, next) {
+    next(vm => {
+      if (from.name === 'Result')
+        vm.resetScores({withEvent: false});
+    });
+  },
 };
 </script>
 

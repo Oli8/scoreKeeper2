@@ -5,7 +5,7 @@
       :striped="true">
       <template slot-scope="props">
         <b-table-column label="Rank" width="40" numeric>
-          1st
+          {{ getPlayerRank(props.row) }}
         </b-table-column>
 
         <b-table-column field="name" label="Name">
@@ -67,10 +67,12 @@
 <script lang="ts">
 import Player from '@/structs/player.class';
 import EventsType from '@/structs/events';
+import tableMixin from '@/mixins/table';
 
 export default {
+  name: 'PlayerTable',
+  mixins: [tableMixin],
   props: {
-    players: Array as () => Player[],
     step: Number,
   },
   methods: {
