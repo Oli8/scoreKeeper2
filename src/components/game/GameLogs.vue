@@ -82,7 +82,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~buefy/src/scss/buefy-build.scss";
 @import "@/variables";
 
 h1 {

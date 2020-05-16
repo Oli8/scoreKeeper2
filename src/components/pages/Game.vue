@@ -73,7 +73,19 @@ export default {
         { label: 'End game', callback: this.endGame,
           disabled: this.hasNoPlayers, icon: 'step-forward' },
       ] as gameButton[],
+      currentPlayer_: null,
     };
+  },
+  computed: {
+    currentPlayer: {
+      get(): Player {
+        return this.currentPlayer_ ||
+              (!this.hasNoPlayers() && this.players[0]);
+      },
+      set(player: Player) {
+        this.currentPlayer_ = player;
+      },
+    },
   },
   methods: {
     onQuickScore(points: number): void {
