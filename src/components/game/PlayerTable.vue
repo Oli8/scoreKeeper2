@@ -2,7 +2,10 @@
   <section>
     <b-table
       :data="players"
-      :striped="true">
+      :striped="true"
+      :hoverable="true"
+      :selected.sync="selected"
+      focusable>
       <template slot-scope="props">
         <b-table-column label="Rank" width="40" numeric>
           {{ getPlayerRank(props.row) }}
@@ -72,8 +75,28 @@ import tableMixin from '@/mixins/table';
 export default {
   name: 'PlayerTable',
   mixins: [tableMixin],
+  data() {
+    return {
+      selectedPlayer: null,
+    };
+  },
+  computed: {
+    selected: {
+      get(): Player {
+        return this.selectedPlayer || this.players[0];
+      },
+      set(player: Player) {
+        this.selectedPlayer = player;
+      },
+    },
+  },
   props: {
     step: Number,
+  },
+  watch: {
+    selected(player: Player) {
+      this.$emit('sync', 'currentPlayer', player);
+    },
   },
   methods: {
     removePlayer(player: Player): void {
@@ -125,5 +148,10 @@ export default {
    with their own `template` tag */
 .table.is-striped tbody tr:not(.is-selected):nth-child(even) {
   background-color: $stripes;
+}
+
+.table tr.is-selected {
+    background-color: darken($purple, 5);
+    color: white;
 }
 </style>
