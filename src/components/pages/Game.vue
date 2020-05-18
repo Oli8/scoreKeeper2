@@ -10,6 +10,7 @@
     <player-table
       @sync="SyncData"
       :players="players"
+      :current-player="currentPlayer"
       :step="step"/>
     <section class="buttons is-centered">
       <b-button v-for="button in gameButtons"
@@ -67,7 +68,7 @@ export default {
       quickScoreOptions: range(13) as number[],
       gameButtons: [
         { label: 'Reset Scores', callback: this.resetScores,
-          disabled: this.allScoresAtZero, icon: 'redo' },
+          disabled: this.areAllScoresAtZero, icon: 'redo' },
         { label: 'Clear game', callback: this.clearGame,
           disabled: this.hasNoPlayers, icon: 'trash' },
         { label: 'End game', callback: this.endGame,
@@ -79,8 +80,10 @@ export default {
   computed: {
     currentPlayer: {
       get(): Player {
-        return this.currentPlayer_ ||
-              (!this.hasNoPlayers() && this.players[0]);
+        if (this.hasNoPlayers())
+          return;
+
+        return this.currentPlayer_ || this.players[0];
       },
       set(player: Player) {
         this.currentPlayer_ = player;
@@ -89,8 +92,12 @@ export default {
   },
   methods: {
     onQuickScore(points: number): void {
-      // TODO: update current player points
-      console.log("update score", points)
+      this.currentPlayer.addPoints(points);
+      this.nextPlay();
+    },
+    nextPlay(): void {
+      const currentPlayerIndex = this.players.indexOf(this.currentPlayer);
+      this.currentPlayer = this.players[(currentPlayerIndex + 1) % this.players.length];
     },
     SyncData(property: string, value: any): any {
       this[property] = value;
@@ -122,7 +129,7 @@ export default {
         },
       });
     },
-    allScoresAtZero(): boolean {
+    areAllScoresAtZero(): boolean {
       return this.players.every((p: player) => p.score === 0);
     },
     hasNoPlayers(): boolean {

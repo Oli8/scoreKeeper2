@@ -75,27 +75,18 @@ import tableMixin from '@/mixins/table';
 export default {
   name: 'PlayerTable',
   mixins: [tableMixin],
-  data() {
-    return {
-      selectedPlayer: null,
-    };
+  props: {
+    step: Number,
+    currentPlayer: Player,
   },
   computed: {
     selected: {
       get(): Player {
-        return this.selectedPlayer || this.players[0];
+        return this.currentPlayer;
       },
       set(player: Player) {
-        this.selectedPlayer = player;
+        this.$emit('sync', 'currentPlayer', player);
       },
-    },
-  },
-  props: {
-    step: Number,
-  },
-  watch: {
-    selected(player: Player) {
-      this.$emit('sync', 'currentPlayer', player);
     },
   },
   methods: {
