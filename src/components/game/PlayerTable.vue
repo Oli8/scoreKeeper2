@@ -1,12 +1,29 @@
 <template>
+
   <section>
+  <b-message v-if="draggable" title="Info" type="is-primary" aria-close-label="Close message">
+    Drag the players up and down to change the order!
+  </b-message>
     <b-table
       :data="players"
       :striped="true"
       :hoverable="true"
       :selected.sync="selected"
-      focusable>
+      focusable
+      :draggable="draggable"
+      @dragstart="dragstart"
+      @drop="drop"
+      @dragover="dragover"
+      @dragleave="dragleave">
       <template slot-scope="props">
+        <b-table-column width="40" :visible="draggable">
+           <b-icon
+                icon="grip-vertical"
+                size="is-small"
+                class="handle">
+            </b-icon>
+        </b-table-column>
+
         <b-table-column label="Rank" width="40" numeric>
           {{ getPlayerRank(props.row) }}
         </b-table-column>
@@ -23,7 +40,7 @@
           </template>
         </b-table-column>
 
-        <b-table-column label="Score" centered>
+        <b-table-column label="Score" field="score" centered numeric>
           <span class="tag is-primary">
             {{ props.row.score }}
           </span>
@@ -95,6 +112,13 @@ export default tableMixin.extend({
         this.$emit('sync', 'currentPlayer', player);
       },
     },
+    draggable: Boolean,
+  },
+  data() {
+    return {
+      draggingRow: false,
+      draggingRowIndex: false,
+    };
   },
   methods: {
     removePlayer(player: Player): void {
@@ -136,6 +160,31 @@ export default tableMixin.extend({
         data: { player: player.name, points: -this.step }
       });
     },
+    swapPlayers(index1: Number, index2: Number): void {
+      [this.players[index1], this.players[index2]] = [this.players[index2], this.players[index1]];
+      this.$forceUpdate();
+    },
+    dragstart (payload) {
+      this.draggingRow = payload.row
+      this.draggingRowIndex = payload.index
+      payload.event.dataTransfer.effectAllowed = 'move'
+    },
+    dragover(payload) {
+      payload.event.dataTransfer.dropEffect = 'move'
+      payload.event.target.closest('tr').classList.add('is-selected')
+      payload.event.preventDefault()
+      if(this.draggingRowIndex !== payload.index) {
+        this.swapPlayers(this.draggingRowIndex, payload.index);
+        this.draggingRowIndex = payload.index // update dragged row index
+      }
+    },
+    dragleave(payload) {
+      payload.event.target.closest('tr').classList.remove('is-selected')
+      payload.event.preventDefault()
+    },
+    drop(payload) {
+      payload.event.target.closest('tr').classList.remove('is-selected')
+    }
   },
 });
 </script>
@@ -149,7 +198,12 @@ export default tableMixin.extend({
 }
 
 .table tr.is-selected {
-    background-color: darken($purple, 5);
-    color: white;
+  background-color: darken($purple, 5);
+  color: white;
+}
+
+.handle{
+  cursor: move; // fallback
+  cursor: grab;
 }
 </style>

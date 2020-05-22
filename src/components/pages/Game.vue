@@ -13,6 +13,7 @@
       @sync="SyncData"
       :players="players"
       :current-player="currentPlayer"
+      :draggable="!!(turnByTurn && 1)"
       :step="options.step"/>
     <section class="basic-margin buttons is-centered">
       <b-button v-for="button in gameButtons"
@@ -187,6 +188,9 @@ export default Vue.extend({
     playersNames(): string[] {
       return map(this.players, 'name');
     },
+  },
+  computed: {
+
   },
   watch: {
     scores(newScores) {
