@@ -1,6 +1,7 @@
 <template>
   <div>
     <game-form
+      :finish-line="finishLine"
       @sync="SyncData"
       @add-player="addPlayer"/>
     <game-quick-score
@@ -32,7 +33,7 @@ import {
   uniqueNamesGenerator, Config,
   colors, adjectives, animals, starWars,
 } from 'unique-names-generator';
-import { range, sample, map } from 'lodash';
+import { range, sample, map, set, max } from 'lodash';
 
 import GameForm from '@/components/game/GameForm';
 import GameQuickScore from '@/components/game/GameQuickScore';
@@ -43,6 +44,7 @@ import Player from '@/structs/player.class';
 import gameButton from '@/structs/gameButton';
 import { DEFAULT_STEP } from '@/consts.ts';
 import EventsType from '@/structs/events';
+import finishLine from '@/structs/finishLine';
 import { WatchAndCache } from '@/utils';
 
 export default {
@@ -65,6 +67,10 @@ export default {
     return {
       players: [] as Player[],
       step: DEFAULT_STEP,
+      finishLine: {
+        enabled: false,
+        value: 50,
+      } as finishLine,
       quickScoreOptions: range(13) as number[],
       gameButtons: [
         { label: 'Reset Scores', callback: this.resetScores,
@@ -89,6 +95,9 @@ export default {
         this.currentPlayer_ = player;
       },
     },
+    scores(): number[] {
+      return map(this.players, 'score');
+    },
   },
   methods: {
     onQuickScore(points: number): void {
@@ -99,8 +108,8 @@ export default {
       const currentPlayerIndex = this.players.indexOf(this.currentPlayer);
       this.currentPlayer = this.players[(currentPlayerIndex + 1) % this.players.length];
     },
-    SyncData(property: string, value: any): any {
-      this[property] = value;
+    SyncData(property: string|string[], value: any): any {
+      set(this, property, value);
     },
     addPlayer(name: string) {
       name = this.checkPlayerName(name);
@@ -158,7 +167,16 @@ export default {
       return map(this.players, 'name');
     },
   },
-  watch: WatchAndCache('players'),
+  watch: {
+    scores(newScores) {
+      if (!this.finishLine.enabled)
+        return;
+
+      if (max(newScores) >= this.finishLine.value)
+        this.endGame();
+    },
+    ...WatchAndCache('players')
+  },
   beforeRouteEnter(_to, from, next) {
     next(vm => {
       if (from.name === 'Result')
