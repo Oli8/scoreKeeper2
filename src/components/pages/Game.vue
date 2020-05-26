@@ -102,6 +102,10 @@ export default {
   methods: {
     onQuickScore(points: number): void {
       this.currentPlayer.addPoints(points);
+      this.emitLogEvent({
+        type: EventsType.POINTS,
+        data: { player: this.currentPlayer.name, points }
+      });
       this.nextPlay();
     },
     nextPlay(): void {
