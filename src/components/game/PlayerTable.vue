@@ -108,21 +108,21 @@ export default {
         data: { player: player.name }
       });
     },
-    resetPlayerScore(player: player): void {
+    resetPlayerScore(player: Player): void {
       player.resetScore();
       this.emitLogEvent({
         type: EventsType.SCORE_RESET,
         data: { player: player.name }
       });
     },
-    addPoints(player: player): void {
+    addPoints(player: Player): void {
       player.addPoints(this.step);
       this.emitLogEvent({
         type: EventsType.POINTS,
         data: { player: player.name, points: this.step }
       });
     },
-    reducePoints(player: player): void {
+    reducePoints(player: Player): void {
       player.addPoints(-this.step);
       this.emitLogEvent({
         type: EventsType.POINTS,

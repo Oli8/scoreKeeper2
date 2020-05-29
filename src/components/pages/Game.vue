@@ -126,7 +126,7 @@ export default {
       });
     },
     resetScores({withEvent=true}): void {
-      this.players.forEach((p: player) => p.resetScore());
+      this.players.forEach((p: Player) => p.resetScore());
       if (withEvent)
         this.emitLogEvent({ type: EventsType.SCORES_RESET });
     },
@@ -143,7 +143,7 @@ export default {
       });
     },
     areAllScoresAtZero(): boolean {
-      return this.players.every((p: player) => p.score === 0);
+      return this.players.every((p: Player) => p.score === 0);
     },
     hasNoPlayers(): boolean {
       return this.players.length === 0;
