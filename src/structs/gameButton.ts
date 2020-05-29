@@ -1,6 +1,6 @@
 export default interface GameButton {
   label: string,
-  callback: function,
-  disabled: function,
+  callback(): void,
+  disabled(): boolean,
   icon?: string
 }
