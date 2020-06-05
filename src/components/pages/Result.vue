@@ -64,15 +64,20 @@ export default tableMixin.extend({
     },
     newGame(): void {
       localStorage.removeItem('players');
+      this.removeLogs();
       this.goToGame();
     },
     replay(): void {
+      this.removeLogs();
       this.goToGame();
     },
     goToGame(): void {
       this.$router.push({
         name: 'Game',
       });
+    },
+    removeLogs(): void {
+      localStorage.removeItem('events');
     },
   },
   computed: {
