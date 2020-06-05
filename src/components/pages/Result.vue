@@ -43,19 +43,8 @@ import gameButton from '@/structs/gameButton';
 import Player from '@/structs/player.class';
 import tableMixin from '@/mixins/table';
 
-export default {
+export default tableMixin.extend({
   name: 'Result',
-  mixins: [tableMixin],
-  data() {
-    return {
-      gameButtons: [
-        { label: 'New Game', callback: this.newGame,
-          disabled: () => false, icon: 'redo' },
-        { label: 'Replay with the same players', callback: this.replay,
-          disabled: () => false, icon: 'redo' },
-      ] as gameButton[],
-    };
-  },
   methods: {
     winners(): Player[] {
       const maxScore = max(map(this.players, 'score'));
@@ -65,7 +54,7 @@ export default {
       });
     },
     winnersMessage(): string {
-      const winner: Player[] = map(this.winners(), 'name');
+      const winner: string[] = map(this.winners(), 'name');
 
       if (winner.length === 1) {
         return `${first(winner)} has won!`;
@@ -86,7 +75,17 @@ export default {
       });
     },
   },
-};
+  computed: {
+    gameButtons(): gameButton[] {
+      return [
+        { label: 'New Game', callback: this.newGame,
+          disabled: () => false, icon: 'redo' },
+        { label: 'Replay with the same players', callback: this.replay,
+          disabled: () => false, icon: 'redo' },
+      ];
+    },
+  },
+});
 </script>
 
 <style lang="scss" scoped>

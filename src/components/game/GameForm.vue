@@ -23,15 +23,17 @@
 </template>
 
 <script lang="ts">
+import Vue, { PropType } from 'vue';
+
 import { DEFAULT_STEP } from '@/consts.ts';
 import finishLine from '../../structs/finishLine';
 
 const finishLineSlug = 'finishLine';
 
-export default {
+export default Vue.extend({
   name: 'GameForm',
   props: {
-    finishLine: Object as () => finishLine,
+    finishLine: Object as PropType<finishLine>,
   },
   data() {
     return {
@@ -41,7 +43,7 @@ export default {
   },
   methods: {
     toggleFinishLine(newVal: boolean): void {
-      this.$refs.finishLineField.focus();
+      (this.$refs.finishLineField as HTMLInputElement).focus();
       this.$emit('sync', [finishLineSlug, 'enabled'], newVal);
     },
     addPlayer(): void {
@@ -52,5 +54,5 @@ export default {
       this.$emit('sync', [finishLineSlug, 'value'], newVal);
     },
   },
-};
+});
 </script>

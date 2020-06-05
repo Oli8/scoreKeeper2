@@ -29,16 +29,17 @@
 </template>
 
 <script lang="ts">
+import Vue from 'vue';
 import {
   uniqueNamesGenerator, Config,
   colors, adjectives, animals, starWars,
 } from 'unique-names-generator';
 import { range, sample, map, set, max } from 'lodash';
 
-import GameForm from '@/components/game/GameForm';
-import GameQuickScore from '@/components/game/GameQuickScore';
-import PlayerTable from '@/components/game/PlayerTable';
-import GameLogs from '@/components/game/GameLogs';
+import GameForm from '@/components/game/GameForm.vue';
+import GameQuickScore from '@/components/game/GameQuickScore.vue';
+import PlayerTable from '@/components/game/PlayerTable.vue';
+import GameLogs from '@/components/game/GameLogs.vue';
 
 import Player from '@/structs/player.class';
 import gameButton from '@/structs/gameButton';
@@ -47,7 +48,7 @@ import EventsType from '@/structs/events';
 import finishLine from '@/structs/finishLine';
 import { WatchAndCache } from '@/utils';
 
-export default {
+export default Vue.extend({
   name: 'Game',
   components: {
     GameForm,
@@ -58,7 +59,7 @@ export default {
   mounted() {
     // Load players from Storage
     if (localStorage.players) {
-      this.players = JSON.parse(localStorage.players).map((player) => {
+      this.players = JSON.parse(localStorage.players).map((player: Player) => {
         return new Player(player.name).setScore(player.score);
       });
     }
@@ -72,22 +73,24 @@ export default {
         value: 50,
       } as finishLine,
       quickScoreOptions: range(13) as number[],
-      gameButtons: [
+      currentPlayer_: null,
+    };
+  },
+  computed: {
+    gameButtons(): gameButton[] {
+      return [
         { label: 'Reset Scores', callback: this.resetScores,
           disabled: this.areAllScoresAtZero, icon: 'redo' },
         { label: 'Clear game', callback: this.clearGame,
           disabled: this.hasNoPlayers, icon: 'trash' },
         { label: 'End game', callback: this.endGame,
           disabled: this.hasNoPlayers, icon: 'step-forward' },
-      ] as gameButton[],
-      currentPlayer_: null,
-    };
-  },
-  computed: {
+      ];
+    },
     currentPlayer: {
-      get(): Player {
+      get(): Player|null {
         if (this.hasNoPlayers())
-          return;
+          return null;
 
         return this.currentPlayer_ || this.players[0];
       },
@@ -135,12 +138,12 @@ export default {
       this.$root.$emit('game-cleared');
     },
     endGame(): void {
-      this.$router.push({
+      this.$router.push(({
         name: 'Result',
         params: {
           players: this.players,
         },
-      });
+      }) as any);
     },
     areAllScoresAtZero(): boolean {
       return this.players.every((p: Player) => p.score === 0);
@@ -182,12 +185,13 @@ export default {
     ...WatchAndCache('players')
   },
   beforeRouteEnter(_to, from, next) {
-    next(vm => {
-      if (from.name === 'Result')
+    next((vm: any) => {
+      if (from.name === 'Result') {
         vm.resetScores({withEvent: false});
+      }
     });
   },
-};
+});
 </script>
 
 <style lang="scss" scoped>
