@@ -20,6 +20,7 @@
 </template>
 
 <script lang="ts">
+import Vue, { PropType } from 'vue';
 import EventsType from '@/structs/events';
 import { event, eventData } from '@/structs/logEvents';
 import { WatchAndCache } from '@/utils';
@@ -35,13 +36,13 @@ const eventMessage = {
   [EventsType.PLAYER_JOINED]: (e: eventData): string => `${e.player} has joined the game!`,
 };
 
-export default {
+export default Vue.extend({
   name: 'GameLogs',
   props: {
-    players: Array as () => string[],
+    players: Array as PropType<string[]>,
   },
   mounted() {
-    this.$root.$on('log-event', (event: eventData) => {
+    this.$root.$on('log-event', (event: event) => {
       this.events.push(event);
     });
 
@@ -61,14 +62,14 @@ export default {
     formatMessage(event: event): string {
       return eventMessage[event.type](event.data as eventData);
     },
-    loadEventsFromStorage() {
+    loadEventsFromStorage(): void {
       const events = localStorage.events;
       if (events)
         this.events = JSON.parse(events);
     },
   },
   computed: {
-    filteredHistory() {
+    filteredHistory(): event[] {
       if (!this.filterPlayer)
         return this.events;
 
@@ -78,7 +79,7 @@ export default {
     },
   },
   watch: WatchAndCache('events'),
-};
+});
 </script>
 
 <style lang="scss" scoped>

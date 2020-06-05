@@ -4,7 +4,7 @@ import 'buefy/dist/buefy.css';
 import App from './App.vue';
 import router from './router';
 
-import { eventData } from '@/structs/logEvents';
+import { event } from '@/structs/logEvents';
 
 Vue.use(Buefy, {
   defaultIconPack: 'fas',
@@ -12,7 +12,7 @@ Vue.use(Buefy, {
 
 Vue.mixin({
   methods: {
-    emitLogEvent(event: eventData): void {
+    emitLogEvent(event: event): void {
       this.$root.$emit('log-event', event);
     },
   },

@@ -72,9 +72,8 @@ import Player from '@/structs/player.class';
 import EventsType from '@/structs/events';
 import tableMixin from '@/mixins/table';
 
-export default {
+export default tableMixin.extend({
   name: 'PlayerTable',
-  mixins: [tableMixin],
   props: {
     step: Number,
     currentPlayer: Player,
@@ -130,7 +129,7 @@ export default {
       });
     },
   },
-}
+});
 </script>
 
 <style lang="scss">

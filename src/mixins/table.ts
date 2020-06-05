@@ -1,8 +1,9 @@
+import Vue, { PropType } from 'vue';
 import Player from '@/structs/player.class';
 
-export default {
+export default Vue.extend({
   props: {
-    players: Array as () => Player[],
+    players: Array as PropType<Player[]>,
   },
   methods: {
     getPlayerRank(player: Player): number {
@@ -11,4 +12,4 @@ export default {
       }).length + 1;
     },
   },
-}
+});
