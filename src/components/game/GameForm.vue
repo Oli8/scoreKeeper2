@@ -10,7 +10,7 @@
                      min="0"
                      v-model="step"></b-numberinput>
     </b-field>
-    <div class="field">
+    <div class="field basic-margin">
       <b-checkbox :value="this.finishLine.enabled"
                   @input="toggleFinishLine"
       >Finish line</b-checkbox>

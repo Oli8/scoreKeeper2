@@ -4,6 +4,7 @@ import 'buefy/dist/buefy.css';
 import App from './App.vue';
 import router from './router';
 
+import './assets/style.css';
 import { event } from '@/structs/logEvents';
 
 Vue.use(Buefy, {

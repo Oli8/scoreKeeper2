@@ -26,7 +26,7 @@
       </template>
     </b-table>
 
-    <section class="buttons is-centered">
+    <section class="buttons is-centered basic-margin">
       <b-button v-for="button in gameButtons"
                 @click="button.callback"
                 :icon-left="button.icon">

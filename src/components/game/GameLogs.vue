@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="events.length">
     <h1>Logs</h1>
     <b-select placeholder="Select a name"
               class="has-text-centered"
