@@ -13,7 +13,7 @@
       :players="players"
       :current-player="currentPlayer"
       :step="step"/>
-    <section class="buttons is-centered">
+    <section class="basic-margin buttons is-centered">
       <b-button v-for="button in gameButtons"
                 @click="$buefy.dialog.confirm({
                   message: 'Are you sure ?',
