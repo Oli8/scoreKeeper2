@@ -14,10 +14,16 @@
       <b-checkbox :value="this.finishLine.enabled"
                   @input="toggleFinishLine"
       >Finish line</b-checkbox>
-      <b-numberinput :value="this.finishLine.value"
-                     @input="updateFinishLineValue"
-                     ref="finishLineField"
-                     v-show="this.finishLine.enabled"></b-numberinput>
+      <template v-show="this.finishLine.enabled">
+        <b-numberinput :value="this.finishLine.value"
+                       @input="updateFinishLineValue"
+                       ref="finishLineField">
+        </b-numberinput>
+        <b-checkbox class="basic-margin"
+                    :value="this.finishLine.mustMatch"
+                    @input="toggleFinishLineMustMatch"
+        >Must match</b-checkbox>
+      </template>
     </div>
   </div>
 </template>
@@ -45,6 +51,9 @@ export default Vue.extend({
     toggleFinishLine(newVal: boolean): void {
       (this.$refs.finishLineField as HTMLInputElement).focus();
       this.$emit('sync', [finishLineSlug, 'enabled'], newVal);
+    },
+    toggleFinishLineMustMatch(newVal: boolean): void {
+      this.$emit('sync', [finishLineSlug, 'mustMatch'], newVal);
     },
     addPlayer(): void {
       this.$emit('add-player', this.pendingPlayerName);
