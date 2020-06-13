@@ -23,6 +23,13 @@
                 :icon-left="button.icon">
         {{ button.label }}
       </b-button>
+      <b-button outlined
+                type="is-info"
+                @click="sayScores"
+                :disabled="hasNoPlayers()"
+                icon-left="bullhorn">
+        Scores
+      </b-button>
     </section>
     <game-logs :players="playersNames()"/>
   </div>
@@ -34,7 +41,7 @@ import {
   uniqueNamesGenerator, Config,
   colors, adjectives, animals, starWars,
 } from 'unique-names-generator';
-import { range, sample, map, set, max } from 'lodash';
+import { range, sample, map, set, max, sortBy } from 'lodash';
 
 import GameForm from '@/components/game/GameForm.vue';
 import GameQuickScore from '@/components/game/GameQuickScore.vue';
@@ -47,6 +54,8 @@ import { DEFAULT_STEP } from '@/consts.ts';
 import EventsType from '@/structs/events';
 import finishLine from '@/structs/finishLine';
 import { WatchAndCache } from '@/utils';
+
+const synth = window.speechSynthesis;
 
 export default Vue.extend({
   name: 'Game',
@@ -144,6 +153,12 @@ export default Vue.extend({
           players: this.players,
         },
       }) as any);
+    },
+    sayScores(): void {
+      sortBy(this.players, (player: Player) => -player.score)
+        .forEach((player: Player) => {
+          synth.speak(new SpeechSynthesisUtterance(`${player.name}, ${player.score}.`));
+        });
     },
     areAllScoresAtZero(): boolean {
       return this.players.every((p: Player) => p.score === 0);
