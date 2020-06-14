@@ -15,6 +15,14 @@
           {{ props.row.name }}
         </b-table-column>
 
+        <b-table-column>
+          <template v-for="(count, icon) in props.row.indicators">
+            <template v-for="i in count">
+              <b-icon :icon="icon" :key="icon+i"></b-icon>
+            </template>
+          </template>
+        </b-table-column>
+
         <b-table-column label="Score" centered>
           <span class="tag is-primary">
             {{ props.row.score }}

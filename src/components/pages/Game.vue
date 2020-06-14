@@ -60,7 +60,8 @@ export default Vue.extend({
     // Load players from Storage
     if (localStorage.players) {
       this.players = JSON.parse(localStorage.players).map((player: Player) => {
-        return new Player(player.name).setScore(player.score);
+        return new Player(player.name, player.indicators)
+                .setScore(player.score);
       });
     }
   },
@@ -182,7 +183,7 @@ export default Vue.extend({
       if (max(newScores) >= this.finishLine.value)
         this.endGame();
     },
-    ...WatchAndCache('players')
+    ...WatchAndCache('players'),
   },
   beforeRouteEnter(_to, from, next) {
     next((vm: any) => {
