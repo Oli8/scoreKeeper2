@@ -81,6 +81,7 @@ export default Vue.extend({
       finishLine: {
         enabled: false,
         value: 50,
+        mustMatch: false,
       } as finishLine,
       quickScoreOptions: range(13) as number[],
       currentPlayer_: null,
@@ -195,8 +196,11 @@ export default Vue.extend({
       if (!this.finishLine.enabled)
         return;
 
-      if (max(newScores) >= this.finishLine.value)
-        this.endGame();
+      if (
+        (this.finishLine.mustMatch && newScores.includes(this.finishLine.value))
+         || (max(newScores) >= this.finishLine.value && !this.finishLine.mustMatch) ) {
+            this.endGame();
+      }
     },
     ...WatchAndCache('players'),
   },
