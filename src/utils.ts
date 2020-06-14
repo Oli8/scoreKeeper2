@@ -1,3 +1,5 @@
+import { WatchOptionsWithHandler } from 'vue';
+
 function WatchAndCache(key: string) {
   return {
     [key]: {
@@ -5,7 +7,7 @@ function WatchAndCache(key: string) {
         localStorage[key] = JSON.stringify(val);
       },
       deep: true,
-    },
+    } as WatchOptionsWithHandler<any>,
   };
 }
 
