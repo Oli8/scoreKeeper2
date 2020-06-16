@@ -202,7 +202,7 @@ export default tableMixin.extend({
   color: white;
 }
 
-.handle{
+.handle {
   cursor: move; // fallback
   cursor: grab;
 }
