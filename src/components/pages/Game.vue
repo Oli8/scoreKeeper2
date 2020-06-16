@@ -20,7 +20,8 @@
                   onConfirm: button.callback,
                 })"
                 :disabled="button.disabled()"
-                :icon-left="button.icon">
+                :icon-left="button.icon"
+                :key="button.label">
         {{ button.label }}
       </b-button>
       <b-button outlined
