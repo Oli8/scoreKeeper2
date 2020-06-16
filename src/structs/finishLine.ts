@@ -1,5 +1,5 @@
-export default interface finishLine {
+export default interface FinishLine {
   enabled: boolean,
-  value: number,
+  value?: number,
   mustMatch?: boolean,
 };
