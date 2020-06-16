@@ -6,9 +6,9 @@
                placeholder="Name"></b-input>
     </b-field>
     <b-field label="Step">
-      <b-numberinput @input="$emit('sync', 'step', Number(step))"
+      <b-numberinput @input="updateStep"
                      min="0"
-                     v-model="step"></b-numberinput>
+                     :value="step"></b-numberinput>
     </b-field>
     <div class="field basic-margin">
       <b-checkbox :value="this.finishLine.enabled"
@@ -31,36 +31,39 @@
 <script lang="ts">
 import Vue, { PropType } from 'vue';
 
-import { DEFAULT_STEP } from '@/consts.ts';
-import finishLine from '../../structs/finishLine';
-
-const finishLineSlug = 'finishLine';
+import FinishLine from '../../structs/finishLine';
 
 export default Vue.extend({
   name: 'GameForm',
   props: {
-    finishLine: Object as PropType<finishLine>,
+    finishLine: Object as PropType<FinishLine>,
+    step: Number,
   },
   data() {
     return {
       pendingPlayerName: '',
-      step: DEFAULT_STEP,
     };
   },
   methods: {
     toggleFinishLine(newVal: boolean): void {
       (this.$refs.finishLineField as HTMLInputElement).focus();
-      this.$emit('sync', [finishLineSlug, 'enabled'], newVal);
+      this.updateFinishLine('enabled', newVal);
     },
     toggleFinishLineMustMatch(newVal: boolean): void {
-      this.$emit('sync', [finishLineSlug, 'mustMatch'], newVal);
+      this.updateFinishLine('mustMatch', newVal);
     },
     addPlayer(): void {
       this.$emit('add-player', this.pendingPlayerName);
       this.pendingPlayerName = '';
     },
     updateFinishLineValue(newVal: number): void {
-      this.$emit('sync', [finishLineSlug, 'value'], newVal);
+      this.updateFinishLine('value', newVal);
+    },
+    updateFinishLine(key: string, value: any): void {
+      this.$emit('sync', ['options', 'finishLine', key], value);
+    },
+    updateStep(newVal: number) {
+      this.$emit('sync', ['options', 'step'], newVal);
     },
   },
 });

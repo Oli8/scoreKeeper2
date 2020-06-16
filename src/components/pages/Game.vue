@@ -1,18 +1,19 @@
 <template>
   <div>
     <game-form
-      :finish-line="finishLine"
+      :finish-line="options.finishLine"
+      :step="options.step"
       @sync="SyncData"
       @add-player="addPlayer"/>
     <game-quick-score
-      v-if="quickScoreOptions"
+      v-if="options.quickScoreOptions"
       @quick-score="onQuickScore"
-      :options="quickScoreOptions"/>
+      :options="options.quickScoreOptions"/>
     <player-table
       @sync="SyncData"
       :players="players"
       :current-player="currentPlayer"
-      :step="step"/>
+      :step="options.step"/>
     <section class="basic-margin buttons is-centered">
       <b-button v-for="button in gameButtons"
                 @click="$buefy.dialog.confirm({
@@ -49,12 +50,13 @@ import GameQuickScore from '@/components/game/GameQuickScore.vue';
 import PlayerTable from '@/components/game/PlayerTable.vue';
 import GameLogs from '@/components/game/GameLogs.vue';
 
+import DefaultOptions from '@/game-configs/default';
 import Player from '@/structs/player.class';
 import gameButton from '@/structs/gameButton';
-import { DEFAULT_STEP } from '@/consts.ts';
 import EventsType from '@/structs/events';
-import finishLine from '@/structs/finishLine';
+import FinishLine from '@/structs/finishLine';
 import { WatchAndCache } from '@/utils';
+import GameConfig from '../../structs/gameConfig';
 
 const synth = window.speechSynthesis;
 
@@ -77,14 +79,8 @@ export default Vue.extend({
   },
   data() {
     return {
+      options: DefaultOptions as GameConfig,
       players: [] as Player[],
-      step: DEFAULT_STEP,
-      finishLine: {
-        enabled: false,
-        value: 50,
-        mustMatch: false,
-      } as finishLine,
-      quickScoreOptions: range(13) as number[],
       currentPlayer_: null,
     };
   },
@@ -194,12 +190,12 @@ export default Vue.extend({
   },
   watch: {
     scores(newScores) {
-      if (!this.finishLine.enabled)
+      if (!this.options.finishLine.enabled)
         return;
 
       if (
-        (this.finishLine.mustMatch && newScores.includes(this.finishLine.value))
-         || (max(newScores) >= this.finishLine.value && !this.finishLine.mustMatch) ) {
+        (this.options.finishLine.mustMatch && newScores.includes(this.options.finishLine.value))
+         || (max(newScores) >= this.options.finishLine.value && !this.options.finishLine.mustMatch)) {
             this.endGame();
       }
     },
