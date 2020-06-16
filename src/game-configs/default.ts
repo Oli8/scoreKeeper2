@@ -7,6 +7,7 @@ const DefaultOptions: GameConfig = {
   finishLine: {
     enabled: false,
   },
+  turnByTurn: false,
   quickScoreOptions: range(1, 11),
   sayScore: 'TURN',
 };

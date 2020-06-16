@@ -23,8 +23,8 @@
                     :value="finishLine.mustMatch"
                     @input="toggleFinishLineMustMatch"
         >Must match</b-checkbox>
-        <b-checkbox @input="enableTurnByTurn"
-                    v-model="turnByTurn"
+        <b-checkbox :value="turnByTurn"
+                    @input="toggleTurnByTurn"
         >Turn by turn</b-checkbox>
       </div>
     </div>
@@ -41,6 +41,7 @@ export default Vue.extend({
   props: {
     finishLine: Object as PropType<FinishLine>,
     step: Number,
+    turnByTurn: Boolean,
   },
   data() {
     return {
@@ -68,8 +69,8 @@ export default Vue.extend({
     updateStep(newVal: number) {
       this.$emit('sync', ['options', 'step'], newVal);
     },
-    enableTurnByTurn(): void {
-      this.$emit('sync', 'turnByTurn', this.turnByTurn);
+    toggleTurnByTurn(newVal: boolean): void {
+      this.$emit('sync', ['options', 'turnByTurn'], newVal);
       // add message
     },
   },

@@ -3,6 +3,7 @@
     <game-form
       :finish-line="options.finishLine"
       :step="options.step"
+      :turn-by-turn="options.turnByTurn"
       @sync="SyncData"
       @add-player="addPlayer"/>
     <game-quick-score
