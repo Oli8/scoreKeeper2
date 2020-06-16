@@ -11,19 +11,19 @@
                      :value="step"></b-numberinput>
     </b-field>
     <div class="field basic-margin">
-      <b-checkbox :value="this.finishLine.enabled"
+      <b-checkbox :value="finishLine.enabled"
                   @input="toggleFinishLine"
       >Finish line</b-checkbox>
-      <template v-show="this.finishLine.enabled">
-        <b-numberinput :value="this.finishLine.value"
+      <div v-show="finishLine.enabled">
+        <b-numberinput :value="finishLine.value"
                        @input="updateFinishLineValue"
                        ref="finishLineField">
         </b-numberinput>
         <b-checkbox class="basic-margin"
-                    :value="this.finishLine.mustMatch"
+                    :value="finishLine.mustMatch"
                     @input="toggleFinishLineMustMatch"
         >Must match</b-checkbox>
-      </template>
+      </div>
     </div>
   </div>
 </template>
