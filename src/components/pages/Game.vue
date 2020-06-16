@@ -190,9 +190,6 @@ export default Vue.extend({
       return map(this.players, 'name');
     },
   },
-  computed: {
-
-  },
   watch: {
     scores(newScores) {
       if (!this.options.finishLine.enabled)
