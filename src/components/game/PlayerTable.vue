@@ -160,7 +160,7 @@ export default tableMixin.extend({
         data: { player: player.name, points: -this.step }
       });
     },
-    swapPlayers(index1: Number, index2: Number): void {
+    swapPlayers(index1: number, index2: number): void {
       [this.players[index1], this.players[index2]] = [this.players[index2], this.players[index1]];
       this.$forceUpdate();
     },
@@ -174,7 +174,7 @@ export default tableMixin.extend({
       payload.event.target.closest('tr').classList.add('is-selected')
       payload.event.preventDefault()
       if(this.draggingRowIndex !== payload.index) {
-        this.swapPlayers(this.draggingRowIndex, payload.index);
+        this.swapPlayers(this.draggingRowIndex as number, payload.index);
         this.draggingRowIndex = payload.index // update dragged row index
       }
     },

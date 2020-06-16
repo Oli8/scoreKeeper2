@@ -14,7 +14,7 @@
       @sync="SyncData"
       :players="players"
       :current-player="currentPlayer"
-      :draggable="!!(turnByTurn && 1)"
+      :draggable="!!options.turnByTurn"
       :step="options.step"/>
     <section class="basic-margin buttons is-centered">
       <b-button v-for="button in gameButtons"
