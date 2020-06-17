@@ -24,7 +24,7 @@
             </b-icon>
         </b-table-column>
 
-        <b-table-column label="Rank" width="40" numeric>
+        <b-table-column label="Rank" width="40" numeric centered>
           {{ getPlayerRank(props.row) }}
         </b-table-column>
 
@@ -32,7 +32,7 @@
           {{ props.row.name }}
         </b-table-column>
 
-        <b-table-column>
+        <b-table-column label="">
           <template v-for="(count, icon) in props.row.indicators">
             <template v-for="i in count">
               <b-icon :icon="icon" :key="icon+i"></b-icon>
