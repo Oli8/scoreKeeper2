@@ -1,5 +1,4 @@
 <template>
-
   <section>
   <b-message v-if="draggable" title="Info" type="is-primary" aria-close-label="Close message">
     Drag the players up and down to change the order!
@@ -103,6 +102,12 @@ export default tableMixin.extend({
     step: Number,
     currentPlayer: Player,
   },
+  data() {
+    return {
+      draggingRow: 0,
+      draggingRowIndex: 0,
+    };
+  },
   computed: {
     selected: {
       get(): Player {
@@ -113,12 +118,6 @@ export default tableMixin.extend({
       },
     },
     draggable: Boolean,
-  },
-  data() {
-    return {
-      draggingRow: false,
-      draggingRowIndex: false,
-    };
   },
   methods: {
     removePlayer(player: Player): void {
@@ -162,6 +161,7 @@ export default tableMixin.extend({
     },
     swapPlayers(index1: number, index2: number): void {
       [this.players[index1], this.players[index2]] = [this.players[index2], this.players[index1]];
+      // TODO: synch with Game component
       this.$forceUpdate();
     },
     dragstart (payload) {
@@ -174,7 +174,7 @@ export default tableMixin.extend({
       payload.event.target.closest('tr').classList.add('is-selected')
       payload.event.preventDefault()
       if(this.draggingRowIndex !== payload.index) {
-        this.swapPlayers(this.draggingRowIndex as number, payload.index);
+        this.swapPlayers(this.draggingRowIndex, payload.index);
         this.draggingRowIndex = payload.index // update dragged row index
       }
     },
