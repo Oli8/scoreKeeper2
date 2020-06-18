@@ -101,11 +101,12 @@ export default tableMixin.extend({
   props: {
     step: Number,
     currentPlayer: Player,
+    draggable: Boolean,
   },
   data() {
     return {
       draggingRow: 0,
-      draggingRowIndex: 0,
+      draggingRowIndex: 0, // false or 0 ???!!!
     };
   },
   computed: {
@@ -117,7 +118,6 @@ export default tableMixin.extend({
         this.$emit('sync', 'currentPlayer', player);
       },
     },
-    draggable: Boolean,
   },
   methods: {
     removePlayer(player: Player): void {
