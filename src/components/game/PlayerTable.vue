@@ -161,29 +161,29 @@ export default tableMixin.extend({
     },
     swapPlayers(index1: number, index2: number): void {
       [this.players[index1], this.players[index2]] = [this.players[index2], this.players[index1]];
-      // TODO: synch with Game component
+      // TODO: synch with Game component, seems like it's done actually
       this.$forceUpdate();
     },
-    dragstart (payload) {
-      this.draggingRow = payload.row
-      this.draggingRowIndex = payload.index
-      payload.event.dataTransfer.effectAllowed = 'move'
+    dragstart(payload) {
+      this.draggingRow = payload.row;
+      this.draggingRowIndex = payload.index;
+      payload.event.dataTransfer.effectAllowed = 'move';
     },
     dragover(payload) {
-      payload.event.dataTransfer.dropEffect = 'move'
-      payload.event.target.closest('tr').classList.add('is-selected')
-      payload.event.preventDefault()
+      payload.event.dataTransfer.dropEffect = 'move';
+      payload.event.target.closest('tr').classList.add('is-selected');
+      payload.event.preventDefault();
       if(this.draggingRowIndex !== payload.index) {
         this.swapPlayers(this.draggingRowIndex, payload.index);
         this.draggingRowIndex = payload.index // update dragged row index
       }
     },
     dragleave(payload) {
-      payload.event.target.closest('tr').classList.remove('is-selected')
-      payload.event.preventDefault()
+      payload.event.target.closest('tr').classList.remove('is-selected');
+      payload.event.preventDefault();
     },
     drop(payload) {
-      payload.event.target.closest('tr').classList.remove('is-selected')
+      payload.event.target.closest('tr').classList.remove('is-selected');
     }
   },
 });
