@@ -54,7 +54,6 @@ import DefaultOptions from '@/game-configs/default';
 import Player from '@/structs/player.class';
 import gameButton from '@/structs/gameButton';
 import EventsType from '@/structs/events';
-import FinishLine from '@/structs/finishLine';
 import { WatchAndCache } from '@/utils';
 import GameConfig from '../../structs/gameConfig';
 
