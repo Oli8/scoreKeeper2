@@ -155,7 +155,8 @@ export default Vue.extend({
     sayScores(): void {
       sortBy(this.players, (player: Player) => -player.score)
         .forEach((player: Player) => {
-          synth.speak(new SpeechSynthesisUtterance(`${player.name}, ${player.score}.`));
+          // use '!' for longer pause between name and score
+          synth.speak(new SpeechSynthesisUtterance(`${player.name}! ${player.score}.`));
         });
     },
     areAllScoresAtZero(): boolean {
