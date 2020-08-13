@@ -12,6 +12,10 @@ const routes = [
     component: Game,
   },
   {
+    path: '/:config',
+    component: Game,
+  },
+  {
     path: '/result',
     name: 'Result',
     component: () => import('@/components/pages/Result.vue'),

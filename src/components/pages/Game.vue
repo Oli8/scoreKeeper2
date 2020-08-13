@@ -75,6 +75,8 @@ export default Vue.extend({
                 .setScore(player.score);
       });
     }
+
+    this.loadConfig();
   },
   data() {
     return {
@@ -110,6 +112,20 @@ export default Vue.extend({
     },
   },
   methods: {
+    async loadConfig() {
+      if (!this.$route.params.config)
+        return;
+
+      try {
+        const { default: config } =
+          await import(`@/game-configs/${this.$route.params.config}`);
+        this.options = config;
+      } catch (e) {
+        this.$router.push({
+          name: 'Game',
+        });
+      }
+    },
     onQuickScore(points: number): void {
       this.currentPlayer.addPoints(points);
       this.emitLogEvent({
