@@ -7,12 +7,8 @@ Vue.use(VueRouter);
 
 const routes = [
   {
-    path: '/',
+    path: '/:config?',
     name: 'Game',
-    component: Game,
-  },
-  {
-    path: '/:config',
     component: Game,
   },
   {
