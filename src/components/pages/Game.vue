@@ -68,14 +68,7 @@ export default Vue.extend({
     GameLogs,
   },
   mounted() {
-    // Load players from Storage
-    if (localStorage.players) {
-      this.players = JSON.parse(localStorage.players).map((player: Player) => {
-        return new Player(player.name, player.indicators)
-                .setScore(player.score);
-      });
-    }
-
+    this.loadPlayers();
     this.loadConfig();
   },
   data() {
@@ -125,6 +118,15 @@ export default Vue.extend({
           name: 'Game',
         });
       }
+    },
+    loadPlayers(): void {
+      if (!localStorage.players)
+        return;
+
+      this.players = JSON.parse(localStorage.players).map((player: Player) => {
+        return new Player(player.name, player.indicators)
+                .setScore(player.score);
+      });
     },
     onQuickScore(points: number): void {
       this.currentPlayer.addPoints(points);
