@@ -106,12 +106,13 @@ export default Vue.extend({
   },
   methods: {
     async loadConfig() {
-      if (!this.$route.params.config)
+      const configName = this.$route.params.config;
+      if (!configName)
         return;
 
       try {
         const { default: config } =
-          await import(`@/game-configs/${this.$route.params.config}`);
+          await import(`@/game-configs/${configName}`);
         this.options = config;
       } catch (e) {
         this.$router.push({
