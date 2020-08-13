@@ -114,7 +114,7 @@ export default Vue.extend({
         const { default: config } =
           await import(`@/game-configs/${configName}`);
         this.options = config;
-      } catch (e) {
+      } catch (_e) {
         this.$router.push({
           name: 'Game',
         });
