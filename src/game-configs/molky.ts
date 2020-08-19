@@ -38,3 +38,5 @@ const MolkyOptions: GameConfig = {
     }
   },
 };
+
+export default MolkyOptions;
