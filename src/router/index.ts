@@ -7,7 +7,7 @@ Vue.use(VueRouter);
 
 const routes = [
   {
-    path: '/',
+    path: '/:config?',
     name: 'Game',
     component: Game,
   },
