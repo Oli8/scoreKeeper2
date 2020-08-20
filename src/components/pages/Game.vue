@@ -135,6 +135,11 @@ export default Vue.extend({
         type: EventsType.POINTS,
         data: { player: this.currentPlayer.name, points }
       });
+
+      this.options.afterPlay?.(
+        this.currentPlayer,
+        points,
+      );
       this.nextPlay();
     },
     nextPlay(): void {
