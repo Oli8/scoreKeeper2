@@ -1,4 +1,5 @@
 import GameConfig from '@/structs/gameConfig';
+import Player from '@/structs/player.class';
 
 import { range, get } from 'lodash';
 
@@ -20,13 +21,17 @@ const MolkyOptions: GameConfig = {
     mustMatch: true,
   },
   quickScoreOptions: range(13),
-  afterPlay(player, points) {
+  afterPlay(player: Player, points) {
     if (points === 0) {
       player.addIndicator(missedIndicator);
+    } else {
+      player.resetIndicator(missedIndicator);
     }
 
-    if (get(player, 'indicators.times-circle', 0) === 3) {
+    // Three missed in a row
+    if (get(player, ['indicators', 'times-circle'], 0) === 3) {
       player.resetScore();
+      player.resetIndicator(missedIndicator);
     }
 
     if (player.score > 50) {
