@@ -21,7 +21,7 @@ const MolkyOptions: GameConfig = {
     mustMatch: true,
   },
   quickScoreOptions: range(13),
-  afterPlay(player: Player, points) {
+  afterPlay(player: Player, points?) {
     if (points === 0) {
       player.addIndicator(missedIndicator);
     } else {

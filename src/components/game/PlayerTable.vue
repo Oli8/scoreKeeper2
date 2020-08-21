@@ -80,6 +80,8 @@ import Player from '@/structs/player.class';
 import EventsType from '@/structs/events';
 import tableMixin from '@/mixins/table';
 
+import { debounce } from 'lodash';
+
 export default tableMixin.extend({
   name: 'PlayerTable',
   props: {
@@ -95,6 +97,11 @@ export default tableMixin.extend({
         this.$emit('sync', 'currentPlayer', player);
       },
     },
+  },
+  created() {
+    (this as any).deboucedAfterPlay = debounce(function(this: any, player: Player) {
+      this.$emit('after-play', player);
+    }, 1500)
   },
   methods: {
     removePlayer(player: Player): void {
