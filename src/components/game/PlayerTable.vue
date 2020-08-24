@@ -80,7 +80,12 @@ import Player from '@/structs/player.class';
 import EventsType from '@/structs/events';
 import tableMixin from '@/mixins/table';
 
-import { debounce } from 'lodash';
+import { debounce, memoize } from 'lodash';
+
+function memoizeDebounce(func: (...args: any) => any, wait=0, options={}) {
+  const mem = memoize((param) => debounce(func, wait, options));
+  return (param: any) => mem(param)(param);
+}
 
 export default tableMixin.extend({
   name: 'PlayerTable',
@@ -99,9 +104,8 @@ export default tableMixin.extend({
     },
   },
   created() {
-    (this as any).deboucedAfterPlay = debounce(function(this: any, player: Player) {
-      this.$emit('after-play', player);
-    }, 1500)
+    (this as any).deboucedAfterPlay = memoizeDebounce(
+      this.$emit.bind(this, 'after-play'), 1500);
   },
   methods: {
     removePlayer(player: Player): void {
