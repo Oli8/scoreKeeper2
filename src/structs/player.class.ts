@@ -51,6 +51,12 @@ export default class Player {
     return this;
   }
 
+  public resetIndicator(type: string): Player {
+    this.updateIndicators(type, 0);
+
+    return this;
+  }
+
   private updateIndicators(type: string, value: number): void {
     // Use assignment to fire watcher
     this.indicators = {

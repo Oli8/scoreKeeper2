@@ -32,13 +32,13 @@
         <b-table-column label="Add">
           <b-button icon-left="plus-circle"
                     type="is-primary"
-                    @click="addPoints(props.row)"></b-button>
+                    @click="addPoints(props.row, step)"></b-button>
         </b-table-column>
 
         <b-table-column label="Substract">
           <b-button icon-left="minus-circle"
                     type="is-primary"
-                    @click="reducePoints(props.row)"></b-button>
+                    @click="addPoints(props.row, -step)"></b-button>
         </b-table-column>
 
         <b-table-column label="Reset">
@@ -80,6 +80,13 @@ import Player from '@/structs/player.class';
 import EventsType from '@/structs/events';
 import tableMixin from '@/mixins/table';
 
+import { debounce, memoize } from 'lodash';
+
+function memoizeDebounce(func: (...args: any) => any, wait=0, options={}) {
+  const mem = memoize((param) => debounce(func, wait, options));
+  return (param: any) => mem(param)(param);
+}
+
 export default tableMixin.extend({
   name: 'PlayerTable',
   props: {
@@ -95,6 +102,10 @@ export default tableMixin.extend({
         this.$emit('sync', 'currentPlayer', player);
       },
     },
+  },
+  created() {
+    (this as any).deboucedAfterPlay = memoizeDebounce(
+      this.$emit.bind(this, 'after-play'), 1500);
   },
   methods: {
     removePlayer(player: Player): void {
@@ -122,18 +133,15 @@ export default tableMixin.extend({
         data: { player: player.name }
       });
     },
-    addPoints(player: Player): void {
-      player.addPoints(this.step);
+    addPoints(player: Player, points: number): void {
+      player.addPoints(points);
+
+      // method not detected as created in created()
+      (this as any).deboucedAfterPlay(player);
+
       this.emitLogEvent({
         type: EventsType.POINTS,
-        data: { player: player.name, points: this.step }
-      });
-    },
-    reducePoints(player: Player): void {
-      player.addPoints(-this.step);
-      this.emitLogEvent({
-        type: EventsType.POINTS,
-        data: { player: player.name, points: -this.step }
+        data: { player: player.name, points: points }
       });
     },
   },

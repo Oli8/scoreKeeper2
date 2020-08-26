@@ -6,7 +6,7 @@ export default interface GameConfig {
   finishLine: FinishLine;
   quickScoreOptions?: number[];
   turn?: boolean;
-  afterPlay?: (player: Player, points: number) => void;
+  afterPlay?: (player: Player, points?: number) => void;
   afterTurn?: (turn: number) => void;
   sayScore?: 'TURN' | 'NEVER';
 }
