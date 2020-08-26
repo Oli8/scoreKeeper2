@@ -11,6 +11,7 @@
       :options="options.quickScoreOptions"/>
     <player-table
       @sync="SyncData"
+      @after-play="afterPlay"
       :players="players"
       :current-player="currentPlayer"
       :step="options.step"/>
@@ -135,7 +136,15 @@ export default Vue.extend({
         type: EventsType.POINTS,
         data: { player: this.currentPlayer.name, points }
       });
+
+      this.options.afterPlay?.(
+        this.currentPlayer,
+        points,
+      );
       this.nextPlay();
+    },
+    afterPlay(player: Player): void {
+      this.options.afterPlay?.(player);
     },
     nextPlay(): void {
       const currentPlayerIndex = this.players.indexOf(this.currentPlayer);
