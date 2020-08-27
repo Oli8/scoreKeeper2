@@ -131,6 +131,9 @@ export default Vue.extend({
       });
     },
     onQuickScore(points: number): void {
+      if (this.hasNoPlayers())
+        return;
+
       this.currentPlayer.addPoints(points);
       this.emitLogEvent({
         type: EventsType.POINTS,
