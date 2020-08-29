@@ -6,6 +6,7 @@ enum EventsType {
   NEW_TURN = 'NEW_TURN',
   PLAYER_REMOVED = 'PLAYER_REMOVED',
   PLAYER_JOINED = 'PLAYER_JOINED',
+  CUSTOM = 'CUSTOM',
 }
 
 export default EventsType;

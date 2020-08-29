@@ -1,5 +1,7 @@
 import GameConfig from '@/structs/gameConfig';
 import Player from '@/structs/player.class';
+import AppComponent from '@/structs/AppComponent';
+import EventsType from '@/structs/events';
 
 import { range, get } from 'lodash';
 
@@ -21,7 +23,7 @@ const MolkyOptions: GameConfig = {
     mustMatch: true,
   },
   quickScoreOptions: range(13),
-  afterPlay(player: Player, points?) {
+  afterPlay(component: AppComponent, player: Player, points?: number) {
     if (points === 0) {
       player.addIndicator(missedIndicator);
     } else {
@@ -36,10 +38,10 @@ const MolkyOptions: GameConfig = {
 
     if (player.score > 50) {
       player.setScore(25);
-      // emitLogEvent({
-      //   type: 'CUSTOM',
-      //   message: `${player.name} went back to 25 !`,
-      // });
+      component.emitLogEvent({
+        type: EventsType.CUSTOM,
+        data: { message: `${player.name} went back to 25 !` },
+      });
     }
   },
 };

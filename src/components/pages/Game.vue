@@ -56,7 +56,8 @@ import Player from '@/structs/player.class';
 import gameButton from '@/structs/gameButton';
 import EventsType from '@/structs/events';
 import { WatchAndCache } from '@/utils';
-import GameConfig from '../../structs/gameConfig';
+import GameConfig from '@/structs/gameConfig';
+import AppComponent from '@/structs/AppComponent';
 
 const synth = window.speechSynthesis;
 
@@ -141,13 +142,14 @@ export default Vue.extend({
       });
 
       this.options.afterPlay?.(
+        this as AppComponent,
         this.currentPlayer,
         points,
       );
       this.nextPlay();
     },
     afterPlay(player: Player): void {
-      this.options.afterPlay?.(player);
+      this.options.afterPlay?.(this as AppComponent, player);
     },
     nextPlay(): void {
       const currentPlayerIndex = this.players.indexOf(this.currentPlayer);

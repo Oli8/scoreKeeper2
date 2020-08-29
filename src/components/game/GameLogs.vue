@@ -29,11 +29,12 @@ const eventMessage = {
   [EventsType.POINTS]: (e: eventData): string => `${e.player} has ${e.points < 0 ? 'lost' : 'won'}
                                                   ${Math.abs(e.points)} points`,
   [EventsType.SCORE_RESET]: (e: eventData): string => `${e.player}'s score has been reset`,
-  [EventsType.SCORES_RESET]: (e: eventData): string => `Scores have been reset`,
-  [EventsType.GAME_RESET]: (e: eventData): string => 'Game has been reset',
+  [EventsType.SCORES_RESET]: (_e: eventData): string => `Scores have been reset`,
+  [EventsType.GAME_RESET]: (_e: eventData): string => 'Game has been reset',
   [EventsType.NEW_TURN]: (e: eventData): string => `Turn: ${e.turn}`,
   [EventsType.PLAYER_REMOVED]: (e: eventData): string => `${e.player} has been removed`,
   [EventsType.PLAYER_JOINED]: (e: eventData): string => `${e.player} has joined the game!`,
+  [EventsType.CUSTOM]: (e: eventData): string => e?.message,
 };
 
 export default Vue.extend({

@@ -4,6 +4,7 @@ interface eventData {
   player?: string,
   points?: number,
   turn?: number,
+  message?: string,
 }
 
 interface event {
