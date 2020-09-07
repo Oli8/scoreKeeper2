@@ -8,6 +8,17 @@
       </template>
 
       <template slot="end">
+        <b-navbar-dropdown label="Configs">
+          <b-navbar-item tag="router-link"
+                         :to="{ path: '/' }">
+            Default
+          </b-navbar-item>
+          <b-navbar-item v-for="config in getConfigsList()" :key="config"
+            tag="router-link"
+            :to="{ path: `/${config.toLowerCase()}` }">
+              {{ config }}
+          </b-navbar-item>
+        </b-navbar-dropdown>
         <b-navbar-item tag="div">
           <div class="buttons">
             <a class="button is-primary">
@@ -19,10 +30,35 @@
     </b-navbar>
 
     <div class="container">
-      <router-view/>
+      <router-view :key="$route.path"/>
     </div>
   </div>
 </template>
+
+<script lang="ts">
+import Vue from 'vue';
+import { capitalize } from 'lodash';
+
+export default Vue.extend({
+  name: 'App',
+  methods: {
+    getConfigsList(): string[] {
+      return require.context(
+        '@/game-configs/custom/',
+        false,
+        /^.*\.ts$/,
+      ).keys()
+       .map((config: string) => {
+        // remove leading './' and ending '.ts'
+        return capitalize(config.substring(
+          config.lastIndexOf('/') + 1,
+          config.lastIndexOf('.'),
+        ));
+       });
+    },
+  },
+});
+</script>
 
 <style lang="scss">
 #app {
