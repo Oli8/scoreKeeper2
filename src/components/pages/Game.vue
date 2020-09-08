@@ -44,7 +44,7 @@ import {
   uniqueNamesGenerator, Config,
   colors, adjectives, animals, starWars,
 } from 'unique-names-generator';
-import { range, sample, map, set, max, sortBy } from 'lodash';
+import { range, sample, map, set, max, sortBy, get } from 'lodash';
 
 import GameForm from '@/components/game/GameForm.vue';
 import GameQuickScore from '@/components/game/GameQuickScore.vue';
@@ -105,12 +105,20 @@ export default Vue.extend({
     scores(): number[] {
       return map(this.players, 'score');
     },
+    customConfig(): string {
+      return this.$route.params.config;
+    },
   },
   methods: {
     async loadConfig() {
-      const configName = this.$route.params.config;
-      if (!configName)
+      const configName = this.customConfig;
+      if (!configName) {
+        this.$watch('options',
+                    (val: GameConfig) => localStorage.options = JSON.stringify(val),
+                    { deep: true });
+        this.loadCachedOptions();
         return;
+      }
 
       try {
         const { default: config } =
@@ -130,6 +138,12 @@ export default Vue.extend({
         return new Player(player.name, player.indicators)
                 .setScore(player.score);
       });
+    },
+    loadCachedOptions(): void {
+      const cachedOptions = JSON.parse(get(localStorage, 'options', null));
+      if (cachedOptions) {
+        this.options = cachedOptions;
+      }
     },
     onQuickScore(points: number): void {
       if (this.hasNoPlayers())
