@@ -1,5 +1,3 @@
-import { Component } from 'vue';
-
 import FinishLine from './finishLine';
 import Player from './player.class';
 import AppComponent from '@/structs/AppComponent';
