@@ -21,7 +21,9 @@
         </b-navbar-dropdown>
         <b-navbar-item tag="div">
           <div class="buttons">
-            <a class="button is-primary">
+            <a class="button is-primary"
+                href="https://github.com/Oli8/scoreKeeper2"
+                target="_blank">
               About
             </a>
           </div>
