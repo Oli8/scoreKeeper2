@@ -40,7 +40,7 @@ const MolkyOptions: GameConfig = {
       player.setScore(25);
       component.emitLogEvent({
         type: EventsType.CUSTOM,
-        data: { message: `${player.name} went back to 25 !` },
+        data: { message: `${player.name} went back to 25!` },
       });
     }
   },
