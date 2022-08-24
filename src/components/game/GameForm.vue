@@ -1,9 +1,13 @@
 <template>
   <div>
-    <b-field label="Add a player">
+    <b-field>
       <b-input v-model="pendingPlayerName"
+               expanded
                v-on:keydown.native.enter="addPlayer"
-               placeholder="Name"></b-input>
+               placeholder="Name..."></b-input>
+      <p class="control">
+        <b-button type="is-primary" label="Add Player" />
+      </p>
     </b-field>
     <b-field label="Step">
       <b-numberinput @input="updateStep"
