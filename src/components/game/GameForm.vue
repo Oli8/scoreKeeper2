@@ -3,10 +3,11 @@
     <b-field>
       <b-input v-model="pendingPlayerName"
                expanded
-               v-on:keydown.native.enter="addPlayer"
+               @keydown.native.enter="addPlayer"
                placeholder="Name..."></b-input>
       <p class="control">
-        <b-button type="is-primary" label="Add Player" />
+        <b-button type="is-primary" label="Add Player"
+                  @click="addPlayer" />
       </p>
     </b-field>
     <b-field label="Step">
